@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<table id="dgOrder" style="height:400px;"></table>
+<div id="tbOrder">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newOrder()">發起訂購</a>
+</div>
+
+@*訂購編輯視窗-------------------------------------------------------------------*@
+<div id="dlgOrder" class="easyui-dialog" style="width:450px;height:280px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">訂購相關資訊</div>
+
+    <form id="fmOrder" method="post" novalidate>
+        <div class="fitem">
+            <label>訂購起訖時間:</label>
+            <input class="easyui-datetimebox" name="orderStartDatetime"
+                   data-options="required:true,showSeconds:false" style="width:150px">
+            ~
+            <input class="easyui-datetimebox" name="orderCloseDatetime"
+                   data-options="required:true,showSeconds:false" style="width:150px">
+        </div>
+        <div class="fitem">
+            <label>店家:</label>
+            <input id="cgShop" style="width:150px" />
+            <input name="shopID" id="shopID" type="hidden" />
+        </div>
+        <div class="fitem">
+            <label>備註:</label>
+            <textarea name="orderDescript" data-options="multiline:true" class="easyui-textbox" style="width:360px;height:80px;"></textarea>
+        </div>
+
+
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveOrder()" style="width:90px">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgOrder').dialog('close')" style="width:90px">Cancel</a>
+</div>
+@*訂購編輯視窗-------------------------------------------------------------------*@
+
+@*訂購視窗-------------------------------------------------------------------*@
+<input id="orderID" name="orderID" type="hidden" />
+
+<div id="wOrderItem" class="easyui-window" title="填寫訂購資訊" data-options="modal:true,closed:true,iconCls:'icon-large-smartart'" style="width:800px;height:600px;padding:10px;">
+
+    <div class="easyui-layout" data-options="fit:true" style="padding:10px;">
+        <div data-options="region:'west',split:false" style="width:250px;padding:5px;">
+            <ul id="dlProduct" title="" style="width:auto;padding:5px;"></ul>
+        </div>
+        <div data-options="region:'center'" style="padding:5px;">
+            <form id="fmOrderItem" method="post" novalidate>
+                <div class="fitem">
+                    <label>餐點名稱:</label>
+                    <input id="productName" name="productName" class="easyui-textbox" readonly="readonly">
+                </div>
+                <div class="fitem">
+                    <label>餐點類型:</label>
+                    <input id="productTypeName" name="productTypeName" class="easyui-textbox" data-options="readonly:true">
+                </div>
+                <div class="fitem">
+                    <label>餐點價格:</label>
+                    <input id="productPrice" name="productPrice" class="easyui-numberbox" data-options="readonly:true">
+                </div>
+                <div class="fitem">
+                    <label>訂購數量:</label>
+                    <input id="orderItemQuantity" name="orderItemQuantity" class="easyui-numberbox" data-options="min:0,required:true">
+                </div>
+                <div style="padding:5px;">
+                    <a href="#" class="easyui-linkbutton" icon="icon-ok" onclick="addOrderItem()">OK</a>
+                </div>
+
+                <input id="orderItemID" name="orderItemID" type="hidden" />
+                <input id="orderItemLoginuserID" name="orderItemLoginuserID" type="hidden" />
+                <input id="productID" name="productID" type="hidden" />
+
+            </form>
+        </div>
+        <div data-options="region:'south',title:'已訂購項目',iconCls:'icon-ok',collapsible:false" style="height:300px;padding:5px;">
+            <table id="dgOrderItem" style="padding:5px;width:auto;"></table>
+            <div id="tbOrderItem" >
+                <div style="float:left;">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="saveOrderitem()">送出訂購</a>
+                </div>
+                <div style="float:right;color:red;">請記得按下 [送出訂購] 按鈕，使訂購有效</div>
+            </div>
+        </div>
+    </div>
+</div>
+@*訂購視窗-------------------------------------------------------------------*@
+
+@Scripts.Render("~/scripts/view/order/Index.js")

@@ -1,0 +1,20 @@
+﻿@model XtraReport1
+@{
+    ViewBag.Title = "XtraReport_OrderItem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.DevExpress().GetStyleSheets(
+    new DevExpress.Web.Mvc.UI.StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+    )
+@Html.DevExpress().GetScripts(
+    new Script { ExtensionSuite = ExtensionSuite.Report }
+    )
+<h2>XtraReport_OrderItem</h2>
+
+@Html.DevExpress().WebDocumentViewer(st => { st.Name = "WebDocumentViewer"; }).Bind(Model).GetHtml();
+
+
+@*@Html.DevExpress().WebDocumentViewer(settings =>
+{
+    settings.Name = "WebDocumentViewer";
+}).Bind(new XtraReport1()).GetHtml()*@

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/19/2016 16:17:11" ReportInfo.Modified="01/20/2016 11:26:01" ReportInfo.CreatorVersion="2016.1.1.0">
+  <Dictionary>
+    <TableDataSource Name="DataItem" ReferenceName="DataItem" DataType="null" Enabled="true">
+      <Column Name="INVOICE_NO" DataType="System.String"/>
+      <Column Name="HAWBNO" DataType="System.String"/>
+      <Column Name="ACCOUNTS_CODE" DataType="System.String"/>
+      <Column Name="ACCOUNTS_NAME" DataType="System.String"/>
+      <Column Name="INVOICE_DATE" DataType="System.DateTime"/>
+      <Column Name="CURR_TYPE" DataType="System.String"/>
+      <Column Name="LOCAL_RATE" DataType="System.Double"/>
+      <Column Name="CNY_NORATE_AMOUNT" DataType="System.Double"/>
+      <Column Name="USD_NORATE_AMOUNT" DataType="System.Double"/>
+      <Column Name="RATE_AMOUNT" DataType="System.Double"/>
+      <Column Name="AMOUNT" DataType="System.Double"/>
+      <Column Name="NORATE_LOCAL_AMOUNT" DataType="System.Double"/>
+      <Column Name="RATE_LOCAL_AMOUNT" DataType="System.Double"/>
+      <Column Name="LOCAL_AMOUNT" DataType="System.Double"/>
+      <Column Name="REAL_AMOUNT" DataType="System.Double"/>
+      <Column Name="REAL_LOCAL_AMOUNT" DataType="System.Double"/>
+      <Column Name="GL_DATE" DataType="System.DateTime"/>
+      <Column Name="SALES" DataType="System.String"/>
+      <Column Name="SALES_DEPT" DataType="System.String"/>
+      <Column Name="DEPT_NAME" DataType="System.String"/>
+      <Column Name="VESSEL_CODE" DataType="System.String"/>
+      <Column Name="DRNO" DataType="System.String"/>
+      <Column Name="ContainerNO" DataType="System.String"/>
+      <Column Name="FLIGHT" DataType="System.String"/>
+      <Column Name="MAWBNO" DataType="System.String"/>
+      <Column Name="BOOKING_NO" DataType="System.String"/>
+      <Column Name="SUPPER_INVOICE_NO" DataType="System.String"/>
+      <Column Name="RECEIPT_NOTE" DataType="System.String"/>
+      <Column Name="NOTIFY_NO" DataType="System.String"/>
+    </TableDataSource>
+  </Dictionary>
+  <ReportPage Name="Page1" PaperWidth="600" Guides="9.45,103.95,113.4,207.9">
+    <ReportTitleBand Name="ReportTitle1" Width="2192.4" Height="37.8"/>
+    <PageHeaderBand Name="PageHeader1" Top="41.8" Width="2192.4" Height="28.35" Guides="0,18.9">
+      <TextObject Name="Text2" Left="9.45" Width="94.5" Height="18.9" Text="INVOICE_NO" Font="宋体, 9pt"/>
+      <TextObject Name="Text4" Left="113.4" Width="94.5" Height="18.9" Text="HAWBNO" Font="宋体, 9pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="74.15" Width="2192.4" Height="75.6" Guides="9.45,28.35" DataSource="DataItem">
+      <TextObject Name="Text1" Left="9.45" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.INVOICE_NO]" Font="宋体, 9pt"/>
+      <TextObject Name="Text3" Left="113.4" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.HAWBNO]" Font="宋体, 9pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="153.75" Width="2192.4" Height="18.9"/>
+  </ReportPage>
+</Report>

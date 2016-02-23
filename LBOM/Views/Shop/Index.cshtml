@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<table id="dg" title="店家資料維護" class="easyui-datagrid" style="width:auto;height:450px"
+       url="@Url.Action("GetShopData","Shop")"
+       toolbar="#toolbar" pagination="true" idField="id"
+       sortName="shopName" sortOrder="asc"
+       rownumbers="true" fitColumns="true" singleSelect="true" pageSize="20">
+    <thead>
+        <tr>
+            <th field="shopName" width="50" sortable="true">店家名稱</th>
+            <th field="shopTEL" width="50">電話號碼</th>
+            <th field="shopAddress" width="50">地址</th>
+            <th field="shopRemark" width="50">備註</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newShop()">新增店家資料</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editShop()">編輯店家資料</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyShop()">刪除店家資料</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-more" plain="true" onclick="openProductWindow()">店家產品資料</a>
+    <br />
+    <span class="te">店家名稱:</span>
+    <input id="shopName" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+    <span>店家電話:</span>
+    <input id="shopTEL" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="doSearch()">查詢</a>
+
+</div>
+
+
+<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px" title="店家資料"
+     closed="true" buttons="#dlg-buttons">
+    <form id="fm" method="post" novalidate>
+        <div class="fitem">
+            <label>店家名稱:</label>
+            <input name="shopName" class="easyui-textbox" required="true">
+            <input name="shopID" type="hidden" />
+        </div>
+        <div class="fitem">
+            <label>電話號碼:</label>
+            <input name="shopTEL" class="easyui-textbox" required="true">
+        </div>
+        <div class="fitem">
+            <label>地址:</label>
+            <input name="shopAddress" class="easyui-textbox">
+        </div>
+        <div class="fitem">
+            <label>備註:</label>
+            <input name="shopRemark" class="easyui-textbox">
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveShop()" style="width:90px">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+</div>
+
+
+
+<div id="wProduct" class="easyui-window" title="店家產品資料" data-options="modal:true,closed:true,iconCls:'icon-large-smartart'" style="width:800px;height:400px;padding:10px;">
+
+
+    <table id="dgProduct" class="easyui-datagrid" title="" style="width:700px;height:auto" sortName="productName" sortOrder="asc"></table>
+
+    <div id="tbProduct">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="insertRow()">新增餐點資料</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="closeProductWindow()">關閉本視窗</a>
+    </div>
+
+</div>
+
+
+@*<script src="~/Scripts/View/shop/Index.js"></script>
+    <script src="~/Scripts/View/Product/Index.js"></script>*@
+
+
+
+@Scripts.Render("~/scripts/view/shop/Index.js")
+@Scripts.Render("~/scripts/view/product/Index.js")
+<script type="text/javascript">
+    $(function () {
+        initialDataGrid();
+    });
+</script>
+

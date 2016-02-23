@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<table id="dg" title="部門資料維護" class="easyui-datagrid" style="width:auto;height:450px"
+       url="@Url.Action("GetDeptData","Dept")"
+       toolbar="#toolbar" pagination="true" idField="id"
+       sortName="deptName" sortOrder="asc"
+       rownumbers="true" fitColumns="true" singleSelect="true" pageSize="20">
+    <thead>
+        <tr>
+            <th field="deptAbbreviate" width="50" sortable="true">部門代碼</th>
+            <th field="deptName" width="50">部門名稱</th>
+        </tr>
+    </thead>
+</table>
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newDept()">新增部門資料</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editDept()">編輯部門資料</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyDept()">刪除部門資料</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-more" plain="true" onclick="openLoginUserNameWindow()">部門員工資料</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" plain="true" onclick="deptSearchExport()">Export data to Excel</a>
+    <br />
+    <span class="te">部門代碼:</span>
+    <input id="deptAbbreviate" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+    <span>部門名稱:</span>
+    <input id="deptName" class="easyui-textbox" style="line-height:26px;border:1px solid #ccc">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="deptSearch()">查詢</a>
+</div>
+
+
+<div id="dlg" class="easyui-dialog" style="width:400px;height:280px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">User Information</div>
+
+    <form id="fm" method="post" novalidate>
+        <div class="fitem">
+            <label>部門代碼:</label>
+            <input name="deptAbbreviate" class="easyui-textbox" required="true">
+            <input name="deptID" type="hidden" />
+        </div>
+        <div class="fitem">
+            <label>部門名稱:</label>
+            <input name="deptName" class="easyui-textbox" required="true">
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveDept()" style="width:90px">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+</div>
+
+
+
+<div id="wUser" class="easyui-window" title="部門員工資料" data-options="modal:true,closed:true,iconCls:'icon-large-smartart'"  style="width:800px;height:600px;padding:10px;">
+
+    <table id="dgUser" url='@Url.Action("GetUserNameData","Dept")' class="easyui-datagrid" title="" style="width:700px;height:auto"
+           pagination="true" idField="id"
+           rownumbers="true" fitColumns="true" singleSelect="true" pageSize="20">
+        <thead>
+            <tr>
+                <th field="deptAbbreviate" width="50" sortable="true">部門名稱</th>
+                <th field="loginuserName" width="50">員工名稱</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@Scripts.Render("~/scripts/view/Dept/Index.js")
+

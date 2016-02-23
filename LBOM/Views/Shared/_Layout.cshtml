@@ -1,0 +1,85 @@
+﻿
+@{
+//if (Session["userInfo"] == null)
+//{
+
+//    Session["userInfo"] = new LBOM.DataEntity.LoginUserInfoDataEntity();
+
+//}
+
+//var uif = Session["userInfo"] as LBOM.DataEntity.LoginUserInfoDataEntity;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 訂餐系統</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/css/easyUI")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/easyUI")
+    @Scripts.Render("~/bundles/jsLibrary")
+
+
+
+</head>
+<body>
+
+    <div class="center body-content">
+        @*<div id="ly" class="easyui-layout" style="height:800px;">
+            <div data-options="region:'north',title:'',split:false" style="height:60px;">
+                <div style="float:left;"><img src="~/Content/images/T3EX.jpg" style="width:128px;height:53px;" /></div>
+                <div style="float:right">
+                    <ul class="nav navbar-nav">
+                        <li><p class="navbar-text" style="color:red;font-size:medium;">HI! @uif.loginuserName</p></li>
+                        <li><p class="navbar-text" style="color:blue;font-size:medium;">@Html.ActionLink("[登出系統]", "Logout", "Home")</p></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div data-options="region:'south',title:'',split:false" style="height:50px;">
+                <footer>
+                    <p>  &copy; @DateTime.Now.Year - T3EX Global Holdings Corp. </p>
+                </footer>
+            </div>
+
+            <div data-options="region:'west',title:'功能選單',split:false" style="width:200px;font-size:medium;">
+                <ul id="tt"></ul>
+                @*<ul id="tt" class="easyui-tree">
+                        <li>
+                            <span><a href="@Url.Action("index","home")">首頁</a></span>
+                            <ul>
+                                <li><span><a href="@Url.Action("index","shop")">店家資訊維護</a></span></li>
+                                <li><span><a href="@Url.Action("index","order")">訂購資訊維護</a></span></li>
+                                <li><span><a href="@Url.Action("index","dept")">部門資訊維護</a></span></li>
+                            </ul>
+                        </li>
+                    </ul>
+            </div>
+            
+            @*<div data-options="region:'center',title:' '" style="padding:5px;overflow:hidden;">
+                
+                
+            </div>
+       
+        </div>*@
+        @RenderBody()
+    </div>
+
+
+
+
+    
+
+    @*@Scripts.Render("~/Scripts/View/_Layout.js")
+    @RenderSection("gridExt", false)*@
+    @*@RenderSection("index_scripts", required: true)
+    @RenderSection("scripts", required: false)*@
+
+
+</body>
+
+</html>

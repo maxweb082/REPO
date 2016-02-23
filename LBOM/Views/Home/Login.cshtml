@@ -1,0 +1,54 @@
+﻿@using LBOM.Models
+@model LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render(
+    "~/Content/css",
+    "~/Content/css/easyUI")
+
+    @Scripts.Render(
+    "~/bundles/jquery",
+    "~/bundles/jqueryval",
+    "~/Scripts/jquery.validate.unobtrusive.js",
+    "~/bundles/easyUI")
+
+
+
+
+    <title>Login</title>
+</head>
+<body>
+    <div class="center">
+        <div style="margin-right: auto; margin-left: auto;width:300px">
+            <div class="easyui-panel" title="登入" style="width:100%;height:250px;padding:10px;">
+
+                @*如果↓表單的ReturnUrl沒給的話，就沒辦法導向使用者原先要求的頁面*@
+                @using (Html.BeginForm("Login", "Home", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { autocomplete = "off" }))
+            {
+                    @Html.LabelFor(m => m.loginuserID)
+                    @Html.TextBoxFor(m => m.loginuserID, new { @class = "form-control",placeholder="請輸入登入帳號" }) @Html.ValidationMessageFor(m => m.loginuserID, "", new { @class = "text-danger" })
+                    <br />
+                    @Html.LabelFor(m => m.loginuserPassword)
+                    @Html.PasswordFor(m => m.loginuserPassword, new { @class = "form-control", placeholder = "請輸入登入密碼" }) @Html.ValidationMessageFor(m => m.loginuserPassword, "", new { @class = "text-danger" })
+                    <br />
+                    @Html.ValidationMessageFor(m => m.DisplayMessage, "", new { @class = "text-danger" })
+                    <br />
+                        <input type="submit" class="btn-primary form-control" value="登入" />
+
+                }
+
+            </div>
+            
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "";
+}
+
+<table id="dgProduct" class="easyui-datagrid" title="" style="width:700px;height:auto" sortName="productName" sortOrder="asc"
+       url='@Url.Action("GetProductData","Product")'
+       data-options="iconCls: 'icon-edit' ,
+           singleSelect: true,
+           toolbar: '#tbProduct',
+           onClickCell:onClickCell
+           ">
+    <thead>
+        <tr>
+            <th data-options="field:'productName',width:80" sortable="true">餐點名稱</th>
+            <th data-options="field:'productTypeID',width:100,
+                        formatter:function(value,row){
+                            return row.productTypeName;
+                        },
+                        editor:{
+                            type:'combobox',
+                            options:{
+                                valueField:'productTypeID',
+                                textField:'productTypeName',
+                                method:'get',
+                                url:'@Url.Action("GetProductTypeData","ProductType")',
+                                required:true
+                            }
+                        }">餐點類型</th>
+            <th data-options="field:'productPrice',width:80,align:'right',editor:{type:'numberbox',options:{precision:0}}">餐點價格</th>
+
+        </tr>
+    </thead>
+</table>
+
+<div id="tbProduct" style="height:auto">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="append()">Append</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="removeit()">Remove</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="accept()">Accept</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-undo',plain:true" onclick="reject()">Reject</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="getChanges()">GetChanges</a>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/View/Product/Index.js"></script>
+}
+@*@Scripts.Render("~/scripts/view/product/Index.js")*@

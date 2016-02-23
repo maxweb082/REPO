@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" DoublePass="true" ReportInfo.Created="01/13/2016 15:49:05" ReportInfo.Modified="01/15/2016 16:33:59" ReportInfo.CreatorVersion="2016.1.1.0">
+  <Styles>
+    <Style Name="ＥｖｅｎＲｏｗ" Fill.Color="Gainsboro" ApplyBorder="false" ApplyTextFill="false" ApplyFont="false"/>
+  </Styles>
+  <Dictionary>
+    <BusinessObjectDataSource Name="DataItem" ReferenceName="DataItem" DataType="null" Enabled="true">
+      <Column Name="JOB_NO" DataType="System.String"/>
+      <Column Name="BL_NO" DataType="System.String"/>
+      <Column Name="VESSEL_CODE" DataType="System.String"/>
+      <Column Name="VESSEL_NAME" DataType="System.String"/>
+      <Column Name="CUSTOMER_ID" DataType="System.String"/>
+      <Column Name="CUSTOMER_NAME" DataType="System.String"/>
+      <Column Name="ON_BOARD_DATE" DataType="System.String"/>
+      <Column Name="DEPT_ID" DataType="System.String"/>
+      <Column Name="SALES_ID" DataType="System.String"/>
+      <Column Name="MODE_TYPE" DataType="System.String"/>
+      <Column Name="JOB_TYPE" DataType="System.String"/>
+      <Column Name="CURRENCY_TYPE" DataType="System.String"/>
+      <Column Name="AR" DataType="System.Double"/>
+      <Column Name="AP" DataType="System.Double"/>
+      <Column Name="AGENT_DUE" DataType="System.Double"/>
+      <Column Name="AGENT_AR" DataType="System.Double"/>
+      <Column Name="AGENT_AP" DataType="System.Double"/>
+      <Column Name="INPUTVAT" DataType="System.Double"/>
+      <Column Name="PROFIT" DataType="System.Double"/>
+      <Column Name="AMEND_PROFIT" DataType="System.Double"/>
+      <Column Name="AR_LOCAL" DataType="System.Double"/>
+      <Column Name="AP_LOCAL" DataType="System.Double"/>
+      <Column Name="AGENT_DUE_LOCAL" DataType="System.Double"/>
+      <Column Name="AGENT_AR_LOCAL" DataType="System.Double"/>
+      <Column Name="AGENT_AP_LOCAL" DataType="System.Double"/>
+      <Column Name="INPUTVAT_LOCAL" DataType="System.Double"/>
+      <Column Name="PROFIT_LOCAL" DataType="System.Double"/>
+      <Column Name="AMEND_PROFIT_LOCAL" DataType="System.Double"/>
+      <Column Name="CONSIGN_STATION" DataType="System.String"/>
+      <Column Name="CONSIGN_SALES" DataType="System.String"/>
+      <Column Name="CONSIGN_PROFIT_LOCAL" DataType="System.Double"/>
+      <Column Name="MBL_NO" DataType="System.String"/>
+      <Column Name="AGENT_ID" DataType="System.String"/>
+      <Column Name="AGENT_NAME" DataType="System.String"/>
+      <Column Name="DISCHARGE_PORT" DataType="System.String"/>
+      <Column Name="POD" DataType="System.String"/>
+      <Column Name="DESTINATION" DataType="System.String"/>
+      <Column Name="LOADING_PORT" DataType="System.String"/>
+      <Column Name="ORIGIN" DataType="System.String"/>
+      <Column Name="GROSS_WEIGHT" DataType="System.Double"/>
+      <Column Name="UNIT_GW" DataType="System.String"/>
+      <Column Name="CHARGEABLE_WEIGHT" DataType="System.Double"/>
+      <Column Name="UNIT_CHAR" DataType="System.String"/>
+    </BusinessObjectDataSource>
+    <Total Name="SubTotal_AR" Expression="[DataItem.AP]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+    <Total Name="SubTotal_AP" Expression="[DataItem.AP]" Evaluator="Data1" PrintOn="GroupFooter1"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Guides="14.45,260.15,8.45,102.95,112.4,206.9,216.35,310.85,320.3,414.8,509.3,603.8,613.25,707.75,425.25,500.85,0,718.2,9.45,103.95,113.4,207.9,217.35,311.85,321.3,415.8,510.3,604.8,614.25,708.75">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="56.7" Fill.Color="LightSlateGray" Guides="13.45,41.8">
+      <TextObject Name="Text17" Left="14.45" Top="13.45" Width="245.7" Height="28.35" Text="業務業績統計表" Font="宋体, 16pt, style=Bold" TextFill.Color="SaddleBrown"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="60.7" Width="718.2" Height="28.35" Border.Lines="Bottom" Guides="7,25.9">
+      <TextObject Name="Text2" Left="8.45" Top="7" Width="94.5" Height="18.9" Text="JOB_NO" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Left="112.4" Top="7" Width="94.5" Height="18.9" Text="DEPT_ID" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+      <TextObject Name="Text6" Left="216.35" Top="7" Width="94.5" Height="18.9" Text="CUSTOMER_NAME" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+      <TextObject Name="Text8" Left="320.3" Top="7" Width="94.5" Height="18.9" Text="SALES_ID" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+      <TextObject Name="Text10" Left="509.3" Top="7" Width="94.5" Height="18.9" Text="AR" HorzAlign="Center" Font="宋体, 10pt, style=Bold"/>
+      <TextObject Name="Text12" Left="613.25" Top="7" Width="94.5" Height="18.9" Text="AP" HorzAlign="Center" Font="宋体, 10pt, style=Bold"/>
+      <TextObject Name="Text19" Left="425.25" Top="7" Width="75.6" Height="18.9" Text="MODE" HorzAlign="Center" VertAlign="Center" Font="宋体, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="93.05" Width="718.2" Height="37.8" Guides="9.45,28.35" Condition="[DataItem.CUSTOMER_NAME]">
+      <TextObject Name="Text13" Top="9.45" Width="718.2" Height="18.9" Fill.Color="Teal" CanGrow="true" Text="[DataItem.CUSTOMER_NAME]" WordWrap="false" TextFill.Color="Silver"/>
+      <DataBand Name="Data1" Top="134.85" Width="718.2" Height="37.8" EvenStyle="ＥｖｅｎＲｏｗ" Guides="9.45,28.35" DataSource="DataItem">
+        <TextObject Name="Text1" Left="9.45" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.JOB_NO]" Font="宋体, 9pt"/>
+        <TextObject Name="Text3" Left="113.4" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.DEPT_ID]" Font="宋体, 9pt"/>
+        <TextObject Name="Text5" Left="217.35" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.CUSTOMER_NAME]" Font="宋体, 9pt"/>
+        <TextObject Name="Text7" Left="321.3" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.SALES_ID]" Font="宋体, 9pt"/>
+        <TextObject Name="Text9" Left="510.3" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.AR]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="宋体, 9pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text11" Left="614.25" Top="9.45" Width="94.5" Height="18.9" Text="[DataItem.AP]" Format="Number" Format.UseLocale="true" HorzAlign="Right" WordWrap="false" Font="宋体, 9pt" Trimming="EllipsisCharacter"/>
+        <TextObject Name="Text18" Left="425.25" Top="9.45" Width="75.6" Height="18.9" Text="[DataItem.MODE_TYPE]" Font="宋体, 9pt"/>
+      </DataBand>
+      <GroupFooterBand Name="GroupFooter1" Top="176.65" Width="718.2" Height="37.8" Guides="9.45,28.35">
+        <TextObject Name="Text14" Left="510.3" Top="9.45" Width="94.5" Height="18.9" Text="[SubTotal_AR]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Underlines="true" Font="宋体, 9pt, style=Bold" TextFill.Color="Red"/>
+        <TextObject Name="Text15" Left="614.25" Top="9.45" Width="94.5" Height="18.9" Text="[SubTotal_AP]" Format="Number" Format.UseLocale="true" HorzAlign="Right" Underlines="true" Font="宋体, 9pt, style=Bold" TextFill.Color="Red"/>
+        <TextObject Name="Text16" Left="9.45" Top="9.45" Width="94.5" Height="18.9" Text="小計：" HorzAlign="Center" Font="宋体, 9pt"/>
+      </GroupFooterBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="218.45" Width="718.2" Height="198.45" Guides="9.45,28.35">
+      <TextObject Name="Text20" Left="9.45" Top="9.45" Width="198.45" Height="18.9" Text="[Date]" Font="宋体, 9pt"/>
+      <TextObject Name="Text21" Left="510.3" Top="9.45" Width="198.45" Height="18.9" Text="[PageNofM]" HorzAlign="Right" Font="宋体, 9pt"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

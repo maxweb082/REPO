@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Index2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section gridExt
+{
+
+    <script type="text/javascript" src="~/Scripts/easyUI/columns-ext.js"></script>
+    <script type="text/javascript" src="~/Scripts/easyUI/datagrid-filter.js"></script>
+}
+<h2>Index2</h2>
+<div>
+    <input id="pickerCode">
+
+</div>
+
+
+@Scripts.Render(
+    "~/scripts/easyui/customplugins/jquery.easyui.customplugin.js",
+    "~/scripts/view/home/index2.js"
+    )

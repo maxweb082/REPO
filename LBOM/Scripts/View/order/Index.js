@@ -75,6 +75,7 @@ function openDlg(dlgID, title) {
 
 function newOrder() {
     openDlg('dlgOrder', '新訂購');
+    $('#cgShop').combogrid('grid').datagrid('reload');
     $('#fmOrder').form('clear');
     url = '/Order/NewOrderData';
 }

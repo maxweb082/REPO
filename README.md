@@ -9,8 +9,7 @@
 ### **使用工具與技術：**   
 > - ASP.NET MVC
 > - EasyUI
-> - Devexpress Reporting
-> - Oracle 
+> - MS SQL SERVER
 
 
 ### **資料表建立：**

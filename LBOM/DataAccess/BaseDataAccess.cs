@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Oracle.ManagedDataAccess.Client;
+using System.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,8 +26,8 @@ namespace LBOM.DataAccess
             try
             {
                 if (ConnectionString == null)
-#if WINFORM
-                    conString = System.Configuration.ConfigurationManager.ConnectionStrings["LBOM"].ToString();
+#if DEBUG
+                    conString = WebConfigurationManager.ConnectionStrings["LBOM_TEST"].ConnectionString;
 #else
                     conString = WebConfigurationManager.ConnectionStrings["LBOM"].ConnectionString;
 #endif
@@ -48,12 +48,12 @@ namespace LBOM.DataAccess
         /// <param name="queryString"></param>
         /// <param name="aryPary"></param>
         /// <returns></returns>
-        protected static List<T> ReadData<T>(string queryString, OracleParameter[] aryPary = null)
+        protected static List<T> ReadData<T>(string queryString, SqlParameter[] aryPary = null)
         {
-            using (var connection = new OracleConnection(ConnectionString))
-            using (var command = new OracleCommand(queryString, connection))
+            using (var connection = new SqlConnection(ConnectionString))
+            using (var command = new SqlCommand(queryString, connection))
             {
-                command.Parameters.AddRange(aryPary ?? new OracleParameter[] { });
+                command.Parameters.AddRange(aryPary ?? new SqlParameter[] { });
 
                 connection.Open();
                 using (var reader = command.ExecuteReader())

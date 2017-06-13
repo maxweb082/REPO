@@ -1,6 +1,4 @@
-﻿using FastReport;
-using FastReport.Export;
-using FastReport.Web;
+﻿
 using LBOM.DataAccess;
 using LBOM.DataEntity;
 using System;
@@ -74,48 +72,7 @@ namespace LBOM.Controllers
             return Json(new { isSuccess = isSuccess, errorMsg = errorMsg }, JsonRequestBehavior.AllowGet);
         }
 
-        /// <summary>
-        /// 匯出訂單
-        /// </summary>
-        /// <param name="orderID"></param>
-        /// <returns></returns>
-        public ActionResult ExportExcel()
-        {
 
-            if (Session["OrderItemExcel"] == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "沒有訂單資料可供下載");
-            }
-            var fileBytes = Session["OrderItemExcel"] as byte[];
-            Session.Remove("OrderItemExcel");
-            var fileName = string.Format("Order{0}.xlsx", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            return File(fileBytes, MediaTypeNames.Application.Octet, fileName);
-        }
-
-        /// <summary>
-        /// 產生指定訂單編號的EXCEL匯出檔案
-        /// <para>本方法將會回傳狀態碼。</para>
-        /// <para>200：表示該訂單編號有資料可匯出，且已產生檔案存放在server端的Session["OrderItemExcel"]，請進一步呼叫ExportExcel動作以取回。</para>
-        /// <para>404：表示該訂單編號沒有資料可匯出。</para>
-        /// </summary>
-        /// <param name="orderID"></param>
-        /// <returns></returns>
-        public ActionResult GenExportExcel(string orderID)
-        {
-            HttpStatusCodeResult status = null;
-
-            if (!OrderItemDataAccess.IsOrderItemExist(orderID))
-            {
-                status = new HttpStatusCodeResult(HttpStatusCode.NotFound, "該訂單尚無訂購明細可匯出");
-            }
-            else
-            {
-                status = new HttpStatusCodeResult(HttpStatusCode.OK);
-                Session["OrderItemExcel"] = ExcelHelper.OrderItemListToExcelContent(orderID);
-            }
-
-            return status;
-        }
 
         /// <summary>
         /// 開啟報表檢視器
@@ -146,13 +103,13 @@ namespace LBOM.Controllers
             var ShopInfo = $"店家：{shop.shopName}    店家電話：{shop.shopTEL}";
             data = OrderItemDataAccess.GetExportList(orderID);
 
-            var wr = new WebReport();
+            //var wr = new WebReport();
             //wr.DesignReport = true;
             //wr.DesignScriptCode = false;
-            wr.Report.Load(Server.MapPath("~/Report/OrderItemList.frx"));
-            wr.Width = 900;
+            //wr.Report.Load(Server.MapPath("~/Report/OrderItemList.frx"));
+            //wr.Width = 900;
 
-            wr.Report.Dictionary.RegisterBusinessObject(data, "OrderItems", 1, true);
+            //wr.Report.Dictionary.RegisterBusinessObject(data, "OrderItems", 1, true);
             //wr.Report.Save(Server.MapPath("~/Report/OrderItemList.frx"));
             //wr.Height = 800;
             //wr.Report.RegisterData(data, "OrderItems");
@@ -161,8 +118,8 @@ namespace LBOM.Controllers
             //db.DataSource = wr.Report.GetDataSource("OrderItems");
             //wr.Report.Dictionary.RegisterData(data, "OrderItems", true);
             //(wr.Report.FindObject("Data1") as DataBand).DataSource = wr.Report.GetDataSource("OrderItems");
-            wr.Report.SetParameterValue("ShopInfo", ShopInfo);
-            ViewBag.WebReport = wr;
+            //wr.Report.SetParameterValue("ShopInfo", ShopInfo);
+            //ViewBag.WebReport = wr;
 
             return View();
         }
@@ -170,17 +127,18 @@ namespace LBOM.Controllers
 
         public ActionResult XtraReport_OrderItem(string orderID)
         {
-            var data = new List<OrderItemExportEntity>();
-            var shop = ShopDataAccess.GetShopData(orderID);
-            var ShopInfo = $"店家：{shop.shopName}    店家電話：{shop.shopTEL}";
-            data = OrderItemDataAccess.GetExportList(orderID);
+            //var data = new List<OrderItemExportEntity>();
+            //var shop = ShopDataAccess.GetShopData(orderID);
+            //var ShopInfo = $"店家：{shop.shopName}    店家電話：{shop.shopTEL}";
+            //data = OrderItemDataAccess.GetExportList(orderID);
 
-            var xr = new XtraReport1();
-            xr.Parameters["ShopInfo"].Value = ShopInfo;
-            xr.RequestParameters = false;
-            xr.DataSource = data;
+            ////var xr = new XtraReport1();
+            //xr.Parameters["ShopInfo"].Value = ShopInfo;
+            //xr.RequestParameters = false;
+            //xr.DataSource = data;
 
-            return View(xr);
+            //return View(xr);
+            return View();
         }
     }
 }

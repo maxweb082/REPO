@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using LBOM.DataEntity;
-using Oracle.ManagedDataAccess.Client;
+using System.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -33,24 +32,24 @@ namespace LBOM.DataAccess
                                ,productID
                                ,orderItemQuantity)
                          VALUES
-                               (:orderItemID
-                               ,:orderID
-                               ,:orderItemLoginuserID
-                               ,:productID
-                               ,:orderItemQuantity)
+                               (@orderItemID
+                               ,@orderID
+                               ,@orderItemLoginuserID
+                               ,@productID
+                               ,@orderItemQuantity)
 
 
                         ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":orderItemID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":orderID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":orderItemLoginuserID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":productID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":orderItemQuantity",OracleDbType.Int32),
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@orderItemID",SqlDbType.VarChar,50),
+                    new SqlParameter("@orderID",SqlDbType.VarChar,50),
+                    new SqlParameter("@orderItemLoginuserID",SqlDbType.VarChar,50),
+                    new SqlParameter("@productID",SqlDbType.VarChar,50),
+                    new SqlParameter("@orderItemQuantity",SqlDbType.Int),
 
                 };
                 cmd.Parameters.AddRange(aryParm);
@@ -59,11 +58,11 @@ namespace LBOM.DataAccess
                 {
                     foreach (var d in lstData)
                     {
-                        cmd.Parameters[":orderItemID"].Value = d.orderItemID;
-                        cmd.Parameters[":orderID"].Value = d.orderID;
-                        cmd.Parameters[":orderItemLoginuserID"].Value = d.orderItemLoginuserID;
-                        cmd.Parameters[":productID"].Value = d.productID;
-                        cmd.Parameters[":orderItemQuantity"].Value = d.orderItemQuantity;
+                        cmd.Parameters["@orderItemID"].Value = d.orderItemID;
+                        cmd.Parameters["@orderID"].Value = d.orderID;
+                        cmd.Parameters["@orderItemLoginuserID"].Value = d.orderItemLoginuserID;
+                        cmd.Parameters["@productID"].Value = d.productID;
+                        cmd.Parameters["@orderItemQuantity"].Value = d.orderItemQuantity;
                         cmd.ExecuteNonQuery();
                     }
                     tsc.Complete();
@@ -90,17 +89,17 @@ namespace LBOM.DataAccess
                         FROM LBOM_ORDER_ITEM OI 
                         JOIN LBOM_PRODUCT P ON OI.PRODUCTID=P.PRODUCTID 
                         JOIN LBOM_LOGIN_USER LU ON OI.ORDERITEMLOGINUSERID=LU.LOGINUSERID 
-                        WHERE OI.ORDERID=:ORDERID
+                        WHERE OI.ORDERID=@ORDERID
             ";
 
             var lst = new List<OrderItemExportEntity>();
             orderID = string.IsNullOrEmpty(orderID) ? null : orderID;
 
-            OracleParameter[] parms = {
-                new OracleParameter(":ORDERID",(object)orderID??DBNull.Value) };
+            SqlParameter[] parms = {
+                new SqlParameter("@ORDERID",(object)orderID??DBNull.Value) };
 
-            //using (var conn = new OracleConnection(ConnectionString))
-            //using (var cmd=new OracleCommand(strSQL,conn))
+            //using (var conn = new SqlConnection(ConnectionString))
+            //using (var cmd=new SqlCommand(strSQL,conn))
             //{
             //    conn.Open();
             //    cmd.Parameters.AddRange(parms);
@@ -134,15 +133,15 @@ namespace LBOM.DataAccess
                         FROM LBOM_ORDER_ITEM OI 
                         JOIN LBOM_PRODUCT P ON OI.PRODUCTID=P.PRODUCTID 
                         JOIN LBOM_LOGIN_USER LU ON OI.ORDERITEMLOGINUSERID=LU.LOGINUSERID 
-                        WHERE OI.ORDERID=:ORDERID
+                        WHERE OI.ORDERID=@ORDERID
             ";
             var isExist = false;
 
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
                 conn.Open();
-                cmd.Parameters.Add(new OracleParameter(":ORDERID", orderID));
+                cmd.Parameters.Add(new SqlParameter("@ORDERID", orderID));
                 var dr = cmd.ExecuteReader();
                 isExist = dr.HasRows;
             }

@@ -77,9 +77,8 @@ namespace LBOM.DataAccess
                 es.SetValue(rowIndex, 1, "總計：");
                 es.Cells[rowIndex, colIndex].Formula = $"SUM(E3:E{rowIndex - 1})";
                 es.Select(new ExcelAddress(rowIndex, 1, rowIndex, colIndex));
-                es.SelectedRange.SetQuickStyle(Color.White, bgColor: Color.Pink, hAlign: ExcelHorizontalAlignment.Right);
+                es.SelectedRange.SetQuickStyle(Color.White, bgColor: Color.DarkRed, hAlign: ExcelHorizontalAlignment.Right);
                 #endregion
-
                 return ep.GetAsByteArray();
             }
 

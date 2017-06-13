@@ -1,9 +1,10 @@
 ﻿
 using LBOM.DataEntity;
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Transactions;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace LBOM.DataAccess
 {
@@ -23,16 +24,16 @@ namespace LBOM.DataAccess
             var strStr = @"
                     SELECT	* 
                     FROM LBOM_SHOP
-                    WHERE shopName LIKE '%' || NVL(:shopName, shopName) || '%' 
-                    AND shopTEL = NVL(:shopTEL, shopTEL)
+                    WHERE shopName LIKE '%' + ISNULL(@shopName, shopName) + '%' 
+                    AND shopTEL = ISNULL(@shopTEL, shopTEL)
             ";
 
             shopName = string.IsNullOrEmpty(shopName) ? null : shopName;
             shopTEL = string.IsNullOrEmpty(shopTEL) ? null : shopTEL;
 
-            OracleParameter[] parms = {
-                new OracleParameter(":shopName",(object)shopName??DBNull.Value),
-                new OracleParameter(":shopTEL", (object)shopTEL ?? DBNull.Value) };
+            SqlParameter[] parms = {
+                new SqlParameter("@shopName",(object)shopName??DBNull.Value),
+                new SqlParameter("@shopTEL", (object)shopTEL ?? DBNull.Value) };
 
 
             var lst = ReadData<ShopDataEntity>(strStr, parms);
@@ -52,11 +53,11 @@ namespace LBOM.DataAccess
                     FROM LBOM_SHOP S 
                     JOIN LBOM_ORDER O ON S.shopID=O.shopID  
                     WHERE 
-                     O.orderID=:orderID 
+                     O.orderID=@orderID 
             ";
 
-            OracleParameter[] parms = {
-                new OracleParameter(":orderID",(object)orderID??DBNull.Value) };
+            SqlParameter[] parms = {
+                new SqlParameter("@orderID",(object)orderID??DBNull.Value) };
 
 
             var lst = ReadData<ShopDataEntity>(strStr, parms);
@@ -81,21 +82,21 @@ namespace LBOM.DataAccess
                            ,shopAddress
                            ,shopRemark)
                      VALUES
-                           (:shopID
-                           ,:shopName
-                           ,:shopTEL
-                           ,:shopAddress
-                           ,:shopRemark) ";
+                           (@shopID
+                           ,@shopName
+                           ,@shopTEL
+                           ,@shopAddress
+                           ,@shopRemark) ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":shopID",OracleDbType.Varchar2 ,50),
-                    new OracleParameter(":shopName",OracleDbType.Varchar2,50),
-                    new OracleParameter(":shopTEL",OracleDbType.Varchar2,20),
-                    new OracleParameter(":shopAddress",OracleDbType.Varchar2,50),
-                    new OracleParameter(":shopRemark",OracleDbType.Varchar2,120)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@shopID",SqlDbType.VarChar ,50),
+                    new SqlParameter("@shopName",SqlDbType.NVarChar,50),
+                    new SqlParameter("@shopTEL",SqlDbType.VarChar,20),
+                    new SqlParameter("@shopAddress",SqlDbType.VarChar,50),
+                    new SqlParameter("@shopRemark",SqlDbType.VarChar,120)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 conn.Open();
@@ -103,11 +104,11 @@ namespace LBOM.DataAccess
                 {
                     foreach (var d in lstData)
                     {
-                        cmd.Parameters[":shopID"].Value = d.shopID;
-                        cmd.Parameters[":shopName"].Value = d.shopName;
-                        cmd.Parameters[":shopTEL"].Value = d.shopTEL;
-                        cmd.Parameters[":shopAddress"].Value = d.shopAddress;
-                        cmd.Parameters[":shopRemark"].Value = d.shopRemark;
+                        cmd.Parameters["@shopID"].Value = d.shopID;
+                        cmd.Parameters["@shopName"].Value = d.shopName;
+                        cmd.Parameters["@shopTEL"].Value = d.shopTEL;
+                        cmd.Parameters["@shopAddress"].Value = d.shopAddress;
+                        cmd.Parameters["@shopRemark"].Value = d.shopRemark;
 
                         cmd.ExecuteNonQuery();
                     }
@@ -130,23 +131,23 @@ namespace LBOM.DataAccess
 
                             UPDATE LBOM_shop
                                SET 
-                                  shopName = :shopName
-                                  ,shopTEL = :shopTEL
-                                  ,shopAddress = :shopAddress
-                                  ,shopRemark = :shopRemark
+                                  shopName = @shopName
+                                  ,shopTEL = @shopTEL
+                                  ,shopAddress = @shopAddress
+                                  ,shopRemark = @shopRemark
                              WHERE 
-                                    shopID=:shopID 
+                                    shopID=@shopID 
                              ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":shopName",OracleDbType.Varchar2,50),
-                    new OracleParameter(":shopTEL",OracleDbType.Varchar2,20),
-                    new OracleParameter(":shopAddress",OracleDbType.Varchar2,50),
-                    new OracleParameter(":shopRemark",OracleDbType.Varchar2,120),
-                    new OracleParameter(":shopID",OracleDbType.Varchar2,50)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@shopName",SqlDbType.VarChar,50),
+                    new SqlParameter("@shopTEL",SqlDbType.VarChar,20),
+                    new SqlParameter("@shopAddress",SqlDbType.VarChar,50),
+                    new SqlParameter("@shopRemark",SqlDbType.VarChar,120),
+                    new SqlParameter("@shopID",SqlDbType.VarChar,50)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 try
@@ -154,11 +155,11 @@ namespace LBOM.DataAccess
                     conn.Open();
                     foreach (var d in lstData)
                     {
-                        cmd.Parameters[":shopID"].Value = d.shopID;
-                        cmd.Parameters[":shopName"].Value = d.shopName;
-                        cmd.Parameters[":shopTEL"].Value = d.shopTEL;
-                        cmd.Parameters[":shopAddress"].Value = d.shopAddress;
-                        cmd.Parameters[":shopRemark"].Value = d.shopRemark;
+                        cmd.Parameters["@shopID"].Value = d.shopID;
+                        cmd.Parameters["@shopName"].Value = d.shopName;
+                        cmd.Parameters["@shopTEL"].Value = d.shopTEL;
+                        cmd.Parameters["@shopAddress"].Value = d.shopAddress;
+                        cmd.Parameters["@shopRemark"].Value = d.shopRemark;
 
                         if (cmd.ExecuteNonQuery() <= 0) throw new Exception("Data update failed");
                     }
@@ -179,20 +180,20 @@ namespace LBOM.DataAccess
 
                             DELETE FROM LBOM_shop
                              WHERE 
-                                    shopID=:shopID 
+                                    shopID=@shopID 
                              ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":shopID",shopID)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@shopID",shopID)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 try
                 {
                     conn.Open();
-                    cmd.Parameters[":shopID"].Value = shopID;
+                    cmd.Parameters["@shopID"].Value = shopID;
                     if (cmd.ExecuteNonQuery() <= 0) throw new Exception("Data delete failed");
 
                     tsc.Complete();

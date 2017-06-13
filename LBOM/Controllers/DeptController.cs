@@ -2,10 +2,8 @@
 using LBOM.DataAccess;
 using LBOM.DataEntity;
 using Newtonsoft.Json;
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;

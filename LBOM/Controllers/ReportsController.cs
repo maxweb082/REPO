@@ -1,4 +1,4 @@
-﻿using FastReport.Web;
+﻿//using FastReport.Web;
 using LBOM.DataAccess;
 using System;
 using System.Collections.Generic;
@@ -27,17 +27,18 @@ namespace LBOM.Controllers
 
         public string GetArapReport(string salesID = null)
         {
-            var data = ReportsDataAccess.GetARAPReportData(salesID);
-            var wr = new WebReport();
+            //var data = ReportsDataAccess.GetARAPReportData(salesID);
+            //var wr = new WebReport();
 
-            wr.Report.Load(Server.MapPath(@"~/Report/ARAP.frx"));
-            wr.Width = 900;
-            wr.Report.RegisterData(data, "DataItem");
-            wr.ShowRefreshButton = false;
-            wr.ShowPrint = false;
+            //wr.Report.Load(Server.MapPath(@"~/Report/ARAP.frx"));
+            //wr.Width = 900;
+            //wr.Report.RegisterData(data, "DataItem");
+            //wr.ShowRefreshButton = false;
+            //wr.ShowPrint = false;
 
-            //ViewBag.WebReport = wr;
-            return wr.Scripts().ToHtmlString() + wr.Styles().ToHtmlString() + wr.GetHtml().ToHtmlString();
+            ////ViewBag.WebReport = wr;
+            //return wr.Scripts().ToHtmlString() + wr.Styles().ToHtmlString() + wr.GetHtml().ToHtmlString();
+            return "";
         }
 
         /// <summary>
@@ -58,25 +59,25 @@ namespace LBOM.Controllers
         /// </summary>
         /// <param name="salesID"></param>
         /// <returns></returns>
-        public ActionResult GetArapRarExcel(string salesID = null)
-        {
-            var stream = new MemoryStream();
-            var data = ReportsDataAccess.GetARAPReportData(salesID, true);
-            FastReport.Utils.Config.WebMode = true;
-            using (var rpt = new FastReport.Report())
-            {
-                rpt.Load(Server.MapPath(@"~/Report/ARAP_Raw.frx"));
-                rpt.RegisterData(data, "DataItem");
-                if (!rpt.Prepare())
-                    return null;
+        //public ActionResult GetArapRarExcel(string salesID = null)
+        //{
+        //    var stream = new MemoryStream();
+        //    var data = ReportsDataAccess.GetARAPReportData(salesID, true);
+        //    FastReport.Utils.Config.WebMode = true;
+        //    using (var rpt = new FastReport.Report())
+        //    {
+        //        rpt.Load(Server.MapPath(@"~/Report/ARAP_Raw.frx"));
+        //        rpt.RegisterData(data, "DataItem");
+        //        if (!rpt.Prepare())
+        //            return null;
 
-                var excelExp = new FastReport.Export.OoXML.Excel2007Export();
-                rpt.Export(excelExp, stream);
-                excelExp.Dispose();
-                stream.Position = 0;
-            }
-            var fileName = string.Format("ApAr_RawData{0}.xlsx", DateTime.Now.ToString("yyyyMMddHHmmss"));
-            return File(stream, MediaTypeNames.Application.Octet, fileName);
-        }
+        //        var excelExp = new FastReport.Export.OoXML.Excel2007Export();
+        //        rpt.Export(excelExp, stream);
+        //        excelExp.Dispose();
+        //        stream.Position = 0;
+        //    }
+        //    var fileName = string.Format("ApAr_RawData{0}.xlsx", DateTime.Now.ToString("yyyyMMddHHmmss"));
+        //    return File(stream, MediaTypeNames.Application.Octet, fileName);
+        //}
     }
 }

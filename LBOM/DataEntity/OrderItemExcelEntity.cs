@@ -18,12 +18,12 @@ namespace LBOM.DataEntity
         /// <summary>
         /// 餐點價格
         /// </summary>
-        public decimal productPrice { get; set; }
+        public int productPrice { get; set; }
 
         /// <summary>
         /// 訂購數量
         /// </summary>
-        public decimal orderItemQuantity { get; set; }
+        public int orderItemQuantity { get; set; }
 
         /// <summary>
         /// 訂購者
@@ -33,7 +33,7 @@ namespace LBOM.DataEntity
         /// <summary>
         /// 訂購金額
         /// </summary>
-        public decimal amount { get; set; }
+        public int amount { get; set; }
 
 
     }

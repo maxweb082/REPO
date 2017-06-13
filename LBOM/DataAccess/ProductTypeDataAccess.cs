@@ -1,5 +1,4 @@
 ﻿using LBOM.DataEntity;
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -24,8 +23,8 @@ namespace LBOM.DataAccess
         {
             var strSQL = @"
                     SELECT * FROM LBOM_PRODUCT_TYPE
-                    WHERE PRODUCTTYPENAME LIKE '%'|| NVL(:productTypeName,productTypeName)||'%' 
-                    AND PRODUCTTYPEID = NVL(:productTypeID,productTypeID) 
+                    WHERE PRODUCTTYPENAME LIKE '%' + ISNULL(@productTypeName,productTypeName) + '%' 
+                    AND PRODUCTTYPEID = ISNULL(@productTypeID,productTypeID) 
             ";
 
             productTypeName = string.IsNullOrEmpty(productTypeName) ? null : productTypeName;
@@ -34,15 +33,15 @@ namespace LBOM.DataAccess
             if (!string.IsNullOrEmpty(sort) && !string.IsNullOrEmpty(order))
                 strSQL += string.Format("ORDER BY {0} {1} ", sort, order);
 
-            OracleParameter[] parms = {
-                new OracleParameter(":productTypeName",(object)productTypeName??DBNull.Value),
-                new OracleParameter(":productTypeID", (object)productTypeID ?? DBNull.Value) };
+            SqlParameter[] parms = {
+                new SqlParameter("@productTypeName",(object)productTypeName??DBNull.Value),
+                new SqlParameter("@productTypeID", (object)productTypeID ?? DBNull.Value) };
 
             //var lst = ReadData<ProductTypeDataEntity>(strSQL, parms);
             var lst = new List<ProductTypeDataEntity>();
 
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
                 cmd.Parameters.AddRange(parms);
                 conn.Open();

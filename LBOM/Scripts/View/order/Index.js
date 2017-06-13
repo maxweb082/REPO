@@ -40,9 +40,9 @@ $(function () {
                     }
 
                     buttons +=
-                        '<a href="#" class="easyui-linkbutton" onclick="exportExcel(this)"> [匯出訂單] </a>' +
+                        '<a href="#" class="easyui-linkbutton" onclick="exportExcel(this)"> [匯出訂單] </a>' 
                         //'<a href="#" name="fast" class="easyui-linkbutton" onclick="exportReport(this)"> [開啟訂單報表] </a>'+
-                        '<a href="#" name="dev" class="easyui-linkbutton" onclick="exportReport(this)"> [開啟訂單報表] </a>';
+                        //'<a href="#" name="dev" class="easyui-linkbutton" onclick="exportReport(this)"> [開啟訂單報表] </a>';
 
                     return buttons;
                 }
@@ -264,14 +264,17 @@ function exportExcel(target) {
     var ajaxSets = {
         type: 'GET',
         datatype: 'json',
-        url: '/OrderItem/GenExportExcel',
+        url: '/Order/GenExportExcel',
         data: { 'orderID': orderID },
         success: function (d, txtStatus, xhr) {
-            window.open('/OrderItem/ExportExcel');
+            window.open('/Order/ExportExcel?ord=' + orderID);
 
         },
         error: function (jqXHR, txtStatus, errorThrown) {
             $.messager.alert('EXCEL匯出失敗', jqXHR.statusText);
+        },
+        complete: function () {
+            $('')
         }
     };
 

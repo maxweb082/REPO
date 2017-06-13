@@ -1,6 +1,6 @@
 ﻿using ClosedXML.Excel;
 using LBOM.DataEntity;
-using Oracle.ManagedDataAccess.Client;
+using System.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -25,17 +25,17 @@ namespace LBOM.DataAccess
         {
             var strStr = @"
                     SELECT * FROM LBOM_DEPT
-                    WHERE DEPTABBREVIATE LIKE '%' || NVL(:DEPTABBREVIATE, DEPTABBREVIATE) || '%' 
-                    AND DEPTNAME LIKE '%' || NVL(:DEPTNAME, DEPTNAME) || '%'
+                    WHERE DEPTABBREVIATE LIKE '%' + ISNULL(@DEPTABBREVIATE, DEPTABBREVIATE) + '%' 
+                    AND DEPTNAME LIKE '%' + ISNULL(@DEPTNAME, DEPTNAME) + '%'
             ";
 
             deptAbbreviate = string.IsNullOrEmpty(deptAbbreviate) ? null : deptAbbreviate;
             deptName = string.IsNullOrEmpty(deptName) ? null : deptName;
 
 
-            OracleParameter[] parms = {
-                new OracleParameter(":deptAbbreviate", (object)deptAbbreviate ?? DBNull.Value),
-                new OracleParameter(":deptName",(object)deptName??DBNull.Value)};
+            SqlParameter[] parms = {
+                new SqlParameter("@DEPTABBREVIATE", (object)deptAbbreviate ?? DBNull.Value),
+                new SqlParameter("@DEPTNAME",(object)deptName??DBNull.Value)};
 
 
             var lst = ReadData<DeptDataEntity>(strStr, parms);
@@ -58,19 +58,19 @@ namespace LBOM.DataAccess
                            ,DEPTNAME)
                      VALUES
                            (
-                            :deptid
-                           ,:deptabbreviate
-                           ,:deptname) 
+                            @deptid
+                           ,@deptabbreviate
+                           ,@deptname) 
                         ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
+                SqlParameter[] aryParm = {
 
-                    new OracleParameter(":deptID",OracleDbType.Varchar2 ,50),
-                    new OracleParameter(":deptAbbreviate",OracleDbType.Varchar2,20),
-                    new OracleParameter(":deptName",OracleDbType.Varchar2,50)
+                    new SqlParameter("@deptID",SqlDbType.VarChar ,50),
+                    new SqlParameter("@deptAbbreviate",SqlDbType.VarChar,20),
+                    new SqlParameter("@deptName",SqlDbType.VarChar,50)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 conn.Open();
@@ -78,9 +78,9 @@ namespace LBOM.DataAccess
                 {
                     foreach (var d in lstData)
                     {
-                        cmd.Parameters[":deptID"].Value = d.deptID;
-                        cmd.Parameters[":deptAbbreviate"].Value = d.deptAbbreviate;
-                        cmd.Parameters[":deptName"].Value = d.deptName;
+                        cmd.Parameters["@deptID"].Value = d.deptID;
+                        cmd.Parameters["@deptAbbreviate"].Value = d.deptAbbreviate;
+                        cmd.Parameters["@deptName"].Value = d.deptName;
 
                         cmd.ExecuteNonQuery();
                     }
@@ -102,19 +102,19 @@ namespace LBOM.DataAccess
             var strSQL = @"
                             UPDATE  LBOM_DEPT
                                SET 
-                                   DEPTABBREVIATE = :deptabbreivate
-                                  ,DEPTNAME = :deptname
+                                   DEPTABBREVIATE = @deptabbreivate
+                                  ,DEPTNAME = @deptname
                              WHERE 
-                                    deptID=:deptID 
+                                    deptID=@deptID 
                              ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":deptAbbreviate",OracleDbType.Varchar2,20),
-                    new OracleParameter(":deptName",OracleDbType.Varchar2,50),
-                    new OracleParameter(":deptID",OracleDbType.Varchar2,50)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@deptabbreivate",SqlDbType.VarChar,20),
+                    new SqlParameter("@deptname",SqlDbType.VarChar,50),
+                    new SqlParameter("@deptID",SqlDbType.VarChar,50)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 try
@@ -122,9 +122,9 @@ namespace LBOM.DataAccess
                     conn.Open();
                     foreach (var d in lstData)
                     {
-                        cmd.Parameters[":deptAbbreviate"].Value = d.deptAbbreviate;
-                        cmd.Parameters[":deptName"].Value = d.deptName;
-                        cmd.Parameters[":deptID"].Value = d.deptID;
+                        cmd.Parameters["@deptabbreivate"].Value = d.deptAbbreviate;
+                        cmd.Parameters["@deptname"].Value = d.deptName;
+                        cmd.Parameters["@deptID"].Value = d.deptID;
 
                         if (cmd.ExecuteNonQuery() <= 0) throw new Exception("Data update failed");
                     }
@@ -145,20 +145,20 @@ namespace LBOM.DataAccess
 
                             DELETE FROM  LBOM_DEPT
                              WHERE 
-                                    deptID=:deptID 
+                                    deptID=@deptID 
                              ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":deptID",deptID)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@deptID",deptID)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 try
                 {
                     conn.Open();
-                    cmd.Parameters[":deptID"].Value = deptID;
+                    cmd.Parameters["@deptID"].Value = deptID;
                     if (cmd.ExecuteNonQuery() <= 0) throw new Exception("Data delete failed");
 
                     tsc.Complete();
@@ -180,11 +180,11 @@ namespace LBOM.DataAccess
         public static List<DeptDataEntity> GetUserNameData(string deptID = null, string deptAbbreviate = null, string deptName = null, string sort = null, string order = null)
         {
             var strSQL = @"
-                    SELECT* FROM LBOM_DEPT D JOIN LBOM_LOGIN_USER U
+                    SELECT * FROM LBOM_DEPT D JOIN LBOM_LOGIN_USER U
                     ON D.DEPTID = U.DEPTID
-                    WHERE DEPTABBREVIATE = NVL(:DEPTABBREVIATEE, DEPTABBREVIATE)
-                    AND DEPTNAME= NVL(:DEPTNAME, DEPTNAME)
-                    AND D.DEPTID=NVL(:DEPTID, D.DEPTID)
+                    WHERE DEPTABBREVIATE = ISNULL(@DEPTABBREVIATE, DEPTABBREVIATE)
+                    AND DEPTNAME= ISNULL(@DEPTNAME, DEPTNAME)
+                    AND D.DEPTID=ISNULL(@DEPTID, D.DEPTID)
             ";
             
             deptAbbreviate = string.IsNullOrEmpty(deptAbbreviate) ? null : deptAbbreviate;
@@ -193,17 +193,17 @@ namespace LBOM.DataAccess
             if (!string.IsNullOrEmpty(sort) && !string.IsNullOrEmpty(order))
                 strSQL += string.Format("ORDER BY {0} {1} ", sort, order);
 
-            OracleParameter[] parms = {
-                new OracleParameter(":deptAbbreviate)", (object)deptAbbreviate ?? DBNull.Value),
-                new OracleParameter(":deptName", (object)deptName ?? DBNull.Value),
-                new OracleParameter(":deptid)", (object)deptID ?? DBNull.Value)};
+            SqlParameter[] parms = {
+                new SqlParameter("@DEPTABBREVIATE", (object)deptAbbreviate ?? DBNull.Value),
+                new SqlParameter("@DEPTNAME", (object)deptName ?? DBNull.Value),
+                new SqlParameter("@DEPTID", (object)deptID ?? DBNull.Value)};
 
             //var lst = ReadData<ProductDataEntity>(strSQL, parms);
             //-----------------------------------------------------------------------------
             var lst = new List<DeptDataEntity>();
 
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
                 cmd.Parameters.AddRange(parms);
                 conn.Open();
@@ -234,24 +234,24 @@ namespace LBOM.DataAccess
         /// </summary>
         public static DataTable GetExportData(string deptAbbreviate=null,string deptName=null)
         {
-            OracleConnection con = new OracleConnection(ConnectionString);
+            SqlConnection con = new SqlConnection(ConnectionString);
             string strSQL = @"
                     SELECT DEPTABBREVIATE, DEPTNAME FROM LBOM_DEPT
-                    WHERE DEPTABBREVIATE LIKE '%' || NVL(:DEPTABBREVIATE, DEPTABBREVIATE) || '%' 
-                    AND DEPTNAME LIKE '%' || NVL(:DEPTNAME, DEPTNAME) || '%'
+                    WHERE DEPTABBREVIATE LIKE '%' + ISNULL(@DEPTABBREVIATE, DEPTABBREVIATE) + '%' 
+                    AND DEPTNAME LIKE '%' + ISNULL(@DEPTNAME, DEPTNAME) + '%'
                      ";
             deptAbbreviate = string.IsNullOrEmpty(deptAbbreviate) ? null : deptAbbreviate;
             deptName = string.IsNullOrEmpty(deptName) ? null : deptName;
 
-            OracleParameter[] parms = {
-                new OracleParameter(":deptAbbreviate)", (object)deptAbbreviate ?? DBNull.Value),
-                new OracleParameter(":deptName", (object)deptName ?? DBNull.Value) };
+            SqlParameter[] parms = {
+                new SqlParameter("@deptAbbreviate", (object)deptAbbreviate ?? DBNull.Value),
+                new SqlParameter("@deptName", (object)deptName ?? DBNull.Value) };
 
             //------------------------------------------------------------------------------
             DataTable dt = new DataTable();
             dt.TableName = "LBOM_DEPT";
             con.Open();
-            OracleDataAdapter da = new OracleDataAdapter(strSQL, con);
+            SqlDataAdapter da = new SqlDataAdapter(strSQL, con);
             da.SelectCommand.Parameters.AddRange(parms);
             da.Fill(dt);
             con.Close();

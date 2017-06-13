@@ -1,5 +1,4 @@
-﻿using FastReport.Web;
-using LBOM.DataAccess;
+﻿using LBOM.DataAccess;
 using LBOM.DataEntity;
 using LBOM.Models;
 using System;

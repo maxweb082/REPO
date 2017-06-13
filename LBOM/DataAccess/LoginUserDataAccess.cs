@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LBOM.DataEntity;
-using Oracle.ManagedDataAccess.Client;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -35,13 +35,13 @@ namespace LBOM.DataAccess
                             FROM LBOM_LOGIN_USER U
                             JOIN LBOM_dept D
 	                            ON U.DEPTID = d.DEPTID
-                            WHERE u.loginuserID = :loginuserID
+                            WHERE u.loginuserID = @loginuserID
                     ";
 
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                cmd.Parameters.Add(new OracleParameter(":loginuserID", userID));
+                cmd.Parameters.Add(new SqlParameter("@loginuserID", userID));
                 conn.Open();
 
                 using (var dr = cmd.ExecuteReader())

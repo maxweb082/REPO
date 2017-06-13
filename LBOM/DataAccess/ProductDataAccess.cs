@@ -1,5 +1,4 @@
 ﻿using LBOM.DataEntity;
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +11,7 @@ namespace LBOM.DataAccess
 {
     public class ProductDataAccess : BaseDataAccess
     {
-        public static object SqlOracleDbType { get; private set; }
+        public static object SqlSqlDbType { get; private set; }
 
         /// <summary>
         /// 取得所有餐點資料
@@ -29,9 +28,9 @@ namespace LBOM.DataAccess
                     SELECT * FROM LBOM_PRODUCT P JOIN LBOM_PRODUCT_TYPE PT 
                     ON P.PRODUCTTYPEID=PT.PRODUCTTYPEID
                     WHERE 
-                    P.PRODUCTNAME LIKE '%'|| NVL(:productName,P.PRODUCTNAME)||'%' AND
-                    P.PRODUCTTYPEID = NVL(:productTypeID,P.PRODUCTTYPEID) AND 
-                    P.SHOPID=NVL(:shopID,P.SHOPID)
+                    P.PRODUCTNAME LIKE '%' + ISNULL(@productName,P.PRODUCTNAME) + '%' AND
+                    P.PRODUCTTYPEID = ISNULL(@productTypeID,P.PRODUCTTYPEID) AND 
+                    P.SHOPID=ISNULL(@shopID,P.SHOPID)
             ";
 
             productName = string.IsNullOrEmpty(productName) ? null : productName;
@@ -41,20 +40,19 @@ namespace LBOM.DataAccess
             if (!string.IsNullOrEmpty(sort) && !string.IsNullOrEmpty(order))
                 strSQL += string.Format("ORDER BY {0} {1} ", sort, order);
 
-            OracleParameter[] parms = {
-                new OracleParameter(":productName",(object)productName??DBNull.Value),
-                new OracleParameter(":shopID", (object)shopID ?? DBNull.Value),
-                new OracleParameter(":productTypeID", (object)productTypeID ?? DBNull.Value) };
+            SqlParameter[] parms = {
+                new SqlParameter("@productName",(object)productName??DBNull.Value),
+                new SqlParameter("@shopID", (object)shopID ?? DBNull.Value),
+                new SqlParameter("@productTypeID", (object)productTypeID ?? DBNull.Value) };
 
             //var lst = ReadData<ProductDataEntity>(strSQL, parms);
             //-----------------------------------------------------------------------------
             var lst = new List<ProductDataEntity>();
 
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.BindByName = true;
                 cmd.Parameters.AddRange(parms);
                 conn.Open();
                 using (var pd = cmd.ExecuteReader())
@@ -98,23 +96,23 @@ namespace LBOM.DataAccess
                                ,shopID
                                ,productPrice)
                          VALUES
-                               (:productID
-                               ,:productName
-                               ,:productTypeID
-                               ,:shopID
-                               ,:productPrice) 
+                               (@productID
+                               ,@productName
+                               ,@productTypeID
+                               ,@shopID
+                               ,@productPrice) 
                           ";
             
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":productID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":productName",OracleDbType.Varchar2,50),
-                    new OracleParameter(":productTypeID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":shopID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":productPrice",OracleDbType.Int32)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@productID",SqlDbType.VarChar,50),
+                    new SqlParameter("@productName",SqlDbType.NVarChar,50),
+                    new SqlParameter("@productTypeID",SqlDbType.VarChar,50),
+                    new SqlParameter("@shopID",SqlDbType.VarChar,50),
+                    new SqlParameter("@productPrice",SqlDbType.Int)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 conn.Open();
@@ -122,11 +120,11 @@ namespace LBOM.DataAccess
                 {
                     foreach (var d in lstData)
                     {
-                        cmd.Parameters[":productID"].Value = d.productID;
-                        cmd.Parameters[":productName"].Value = d.productName;
-                        cmd.Parameters[":productTypeID"].Value = d.productTypeID;
-                        cmd.Parameters[":shopID"].Value = d.shopID;
-                        cmd.Parameters[":productPrice"].Value = d.productPrice;
+                        cmd.Parameters["@productID"].Value = d.productID;
+                        cmd.Parameters["@productName"].Value = d.productName;
+                        cmd.Parameters["@productTypeID"].Value = d.productTypeID;
+                        cmd.Parameters["@shopID"].Value = d.shopID;
+                        cmd.Parameters["@productPrice"].Value = d.productPrice;
 
                         cmd.ExecuteNonQuery();
                     }
@@ -151,25 +149,24 @@ namespace LBOM.DataAccess
             var strSQL = @"
                         UPDATE LBOM_PRODUCT
                            SET 
-                              productName = :productName
-                              ,productTypeID = :productTypeID
-                              ,shopID = :shopID
-                              ,productPrice = :productPrice
+                              productName = @productName
+                              ,productTypeID = @productTypeID
+                              ,shopID = @shopID
+                              ,productPrice = @productPrice
                          WHERE 
-                                productID=:productID
+                                productID=@productID
                              ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.BindByName = true;
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":productID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":productTypeID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":productName",OracleDbType.Varchar2,50),
-                    new OracleParameter(":shopID",OracleDbType.Varchar2,50),
-                    new OracleParameter(":productPrice",OracleDbType.Int32)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@productID",SqlDbType.VarChar,50),
+                    new SqlParameter("@productTypeID",SqlDbType.VarChar,50),
+                    new SqlParameter("@productName",SqlDbType.NVarChar,50),
+                    new SqlParameter("@shopID",SqlDbType.VarChar,50),
+                    new SqlParameter("@productPrice",SqlDbType.Int)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 try
@@ -177,11 +174,11 @@ namespace LBOM.DataAccess
                     conn.Open();
                     foreach (var d in lstData)
                     {
-                        cmd.Parameters[":productID"].Value = d.productID;
-                        cmd.Parameters[":productTypeID"].Value = d.productTypeID;
-                        cmd.Parameters[":productName"].Value = d.productName;
-                        cmd.Parameters[":shopID"].Value = d.shopID;
-                        cmd.Parameters[":productPrice"].Value = d.productPrice;
+                        cmd.Parameters["@productID"].Value = d.productID;
+                        cmd.Parameters["@productTypeID"].Value = d.productTypeID;
+                        cmd.Parameters["@productName"].Value = d.productName;
+                        cmd.Parameters["@shopID"].Value = d.shopID;
+                        cmd.Parameters["@productPrice"].Value = d.productPrice;
 
                         if (cmd.ExecuteNonQuery() <= 0) throw new Exception("Data update failed");
                     }
@@ -201,20 +198,20 @@ namespace LBOM.DataAccess
             var strSQL = @"
                              DELETE FROM LBOM_PRODUCT 
                              WHERE 
-                                    productID=:productID 
+                                    productID=@productID 
                              ";
             using (var tsc = new TransactionScope())
-            using (var conn = new OracleConnection(ConnectionString))
-            using (var cmd = new OracleCommand(strSQL, conn))
+            using (var conn = new SqlConnection(ConnectionString))
+            using (var cmd = new SqlCommand(strSQL, conn))
             {
-                OracleParameter[] aryParm = {
-                    new OracleParameter(":productID",productID)
+                SqlParameter[] aryParm = {
+                    new SqlParameter("@productID",productID)
                 };
                 cmd.Parameters.AddRange(aryParm);
                 try
                 {
                     conn.Open();
-                    cmd.Parameters[":productID"].Value = productID;
+                    cmd.Parameters["@productID"].Value = productID;
                     if (cmd.ExecuteNonQuery() <= 0) throw new Exception("Data delete failed");
 
                     tsc.Complete();

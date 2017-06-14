@@ -146,7 +146,7 @@ namespace LBOM.DataAccess
                     new SqlParameter("@shopName",SqlDbType.VarChar,50),
                     new SqlParameter("@shopTEL",SqlDbType.VarChar,20),
                     new SqlParameter("@shopAddress",SqlDbType.VarChar,50),
-                    new SqlParameter("@shopRemark",SqlDbType.VarChar,120),
+                    new SqlParameter("@shopRemark",SqlDbType.NVarChar,120),
                     new SqlParameter("@shopID",SqlDbType.VarChar,50)
                 };
                 cmd.Parameters.AddRange(aryParm);

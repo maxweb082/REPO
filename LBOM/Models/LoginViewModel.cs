@@ -47,11 +47,9 @@ namespace LBOM.Models
             //todo到DB抓使用者資料
             var user = LoginUserDataAccess.GetUser(loginuserID);
             //假如抓不到系統使用者資料
-#if (RELEASE)
-            if (!(loginuserID == user.loginuserID && base64Password == user.loginuserPassword))
-#else
+
+//            if (!(loginuserID == user.loginuserID && base64Password == user.loginuserPassword))
             if (!(loginuserID == user.loginuserID))
-#endif
             {
                 yield return new ValidationResult("無此帳號或密碼錯誤", new string[] { "DisplayMessage" });
             }

@@ -13,6 +13,7 @@ $(function () {
         pagination: true,
         toolbar: '#tbOrder',
         pageSize: 20,
+        fit:true,
         columns: [[
             { field: 'orderLoginuserName', title: '訂購發起人', width: 100 },
             {

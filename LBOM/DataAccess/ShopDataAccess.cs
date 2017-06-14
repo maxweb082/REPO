@@ -159,7 +159,7 @@ namespace LBOM.DataAccess
                         cmd.Parameters["@shopName"].Value = d.shopName;
                         cmd.Parameters["@shopTEL"].Value = d.shopTEL;
                         cmd.Parameters["@shopAddress"].Value = d.shopAddress;
-                        cmd.Parameters["@shopRemark"].Value = d.shopRemark;
+                        cmd.Parameters["@shopRemark"].Value = string.IsNullOrEmpty(d.shopRemark)?"":d.shopRemark;
 
                         if (cmd.ExecuteNonQuery() <= 0) throw new Exception("Data update failed");
                     }

@@ -95,6 +95,7 @@ var core = {
                     content: '<iframe scrolling="auto" frameborder="0"  style="width:100%;height:100%;" onLoad="closeTabLoading()" src="' + url + '" ></iframe>',
                     iconCls: icon
                 });
+                //tbs.tabs('getSelected').css('width', 'auto');   
             }
         }
     },

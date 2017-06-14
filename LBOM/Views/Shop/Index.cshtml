@@ -6,10 +6,11 @@
 
 
 
-<table id="dg" title="店家資料維護" class="easyui-datagrid" style="width:auto;height:450px"
+<table id="dg" title="店家資料維護" class="easyui-datagrid" style="height:450px"
        url="@Url.Action("GetShopData","Shop")"
        toolbar="#toolbar" pagination="true" idField="id"
        sortName="shopName" sortOrder="asc"
+       fit="true"
        rownumbers="true" fitColumns="true" singleSelect="true" pageSize="20">
     <thead>
         <tr>

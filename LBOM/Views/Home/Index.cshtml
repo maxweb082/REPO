@@ -35,7 +35,7 @@
 <body id="bdy" class="center body-content">
 
 
-    <div id="ly" class="easyui-layout" style="height:640px;">
+    <div id="ly" class="easyui-layout" data-options="fit:true" style="height:640px;">
         <div data-options="region:'north',title:'',split:false" style="height:60px;">
             <div style="float:left;"><img src="~/Content/images/eat_with.jpg" style="width:128px;height:53px;" /></div>
             <div style="float:right">
@@ -57,8 +57,8 @@
         </div>
 
         <div id="contCenter" data-options="region:'center',noheader:true" style="padding:0px;overflow:hidden;border:none;">
-            <div id="tabs" class="easyui-tabs" style="width:inherit;height:640px;overflow:hidden;">
-                <div title="Home" data-options="closable:false,iconCls:'icon-home'">
+            <div id="tabs" class="easyui-tabs" data-options="fit:true" style="width:auto;height:640px;overflow:hidden;">
+                <div title="Home" data-options="closable:false,iconCls:'icon-home'" >
                     <h2>請選擇作業功能</h2>
                 </div>
             </div>

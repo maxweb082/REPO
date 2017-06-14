@@ -27,7 +27,7 @@ namespace LBOM.DataAccess
             {
                 if (ConnectionString == null)
 #if DEBUG
-                    conString = WebConfigurationManager.ConnectionStrings["LBOM_TEST"].ConnectionString;
+                    conString = WebConfigurationManager.ConnectionStrings["LBOM"].ConnectionString;
 #else
                     conString = WebConfigurationManager.ConnectionStrings["LBOM"].ConnectionString;
 #endif

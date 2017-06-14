@@ -1128,7 +1128,6 @@
     <Content Include="Content\easyUI\themes\icons\heart_connect.png" />
     <Content Include="Content\easyUI\themes\icons\heart_delete.png" />
     <Content Include="Content\easyUI\themes\icons\help.png" />
-    <Content Include="Content\easyUI\themes\icons\home.png" />
     <Content Include="Content\easyUI\themes\icons\hourglass.png" />
     <Content Include="Content\easyUI\themes\icons\hourglass_add.png" />
     <Content Include="Content\easyUI\themes\icons\hourglass_delete.png" />

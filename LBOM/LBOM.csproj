@@ -2102,9 +2102,7 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\OrderItem\FRPT_OrderItem.cshtml" />
     <Content Include="Views\Dept\Index.cshtml" />
-    <Content Include="Views\OrderItem\XtraReport_OrderItem.cshtml" />
     <Content Include="Views\Reports\ARAP.cshtml" />
     <Content Include="Views\Home\Wrapper.cshtml" />
     <None Include="Web.Debug.config">
@@ -2117,6 +2115,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\OrderItem\" />
     <Folder Include="Views\ProductType\" />
   </ItemGroup>
   <ItemGroup>

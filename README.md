@@ -1,7 +1,7 @@
 # LBOM(訂餐系統)
 ![ScreenShot](https://github.com/stanChung/LBOM/blob/master/LBOM_H.PNG)
 ### **DEMO：**
-> - 演示網址:http://http://lbom.apphb.com/
+> - 演示網址:[http://http://lbom.apphb.com/home/index](http://http://lbom.apphb.com/home/index)
 > - 登入帳號=aa
 > - 登入密碼=請隨意輸入
   

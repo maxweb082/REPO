@@ -67,10 +67,6 @@
 .icon-more{
 	background:url('icons/more.png') no-repeat center center;
 }
-.icon-stop{
-	background:url('icons/stop.png') no-repeat center center;
-}
-
 
 
 .icon-mini-add{
@@ -97,16 +93,4 @@
 }
 .icon-large-chart{
 	background:url('icons/large_chart.png') no-repeat center center;
-}
-
-.icon-home{
-	background:url('icons/house.png') no-repeat center center;
-}
-
-.icon-application-form{
-	background:url('icons/application_form.png') no-repeat center center;
-}
-
-.icon-house-star {
-    background:url('icons/house_star.png') no-repeat center center;
 }
